@@ -1,3 +1,20 @@
 <div class="jw-footer">
   <p>{{ ::vm.config.footerText }}</p>
+  <a
+    class="jw-footer-link"
+    ng-if="vm.options.termsAndConditions"
+    href="{{ ::vm.options.termsAndConditions }}"
+    target="_blank"
+  >
+    Terms and conditions
+  </a>
+  <span ng-if="vm.options.privacyPolicy && vm.options.termsAndConditions">-</span>
+  <a
+    class="jw-footer-link"
+    ng-if="vm.options.privacyPolicy"
+    href="{{ ::vm.options.privacyPolicy }}"
+    target="_blank"
+  >
+    Privacy policy
+  </a>
 </div>

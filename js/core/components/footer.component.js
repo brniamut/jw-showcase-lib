@@ -36,6 +36,7 @@
         var vm = this;
 
         vm.config = config;
+        vm.options = config.options;
     }
 
 }());
