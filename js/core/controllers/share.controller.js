@@ -28,15 +28,33 @@
      * @requires $location
      * @requires jwShowcase.core.utils
      */
-    ShareController.$inject = ['$timeout', '$location', 'utils', 'item'];
-    function ShareController ($timeout, $location, utils, item) {
+    ShareController.$inject = ['$timeout', '$location', 'utils', 'item', 'config'];
+    function ShareController ($timeout, $location, utils, item, config) {
 
         var vm = this;
 
-        vm.facebookShareLink = utils.composeFacebookLink();
-        vm.twitterShareLink  = utils.composeTwitterLink(item.title);
-        vm.emailShareLink    = utils.composeEmailLink(item.title);
+        // Determine which base-url to use based on if this is run in the app or in the browser
+        var inBrowser = !window.cordova;
+        var shareBaseUrl = inBrowser ? $location.host() + ':' + $location.port() : config.appName + '.jwpapp.com';
+        var shareUrl = $location.protocol() + '://' + shareBaseUrl + $location.path();
+
+        var providerConfig = {
+            facebook: {
+                url: utils.composeFacebookLink(shareUrl),
+                targetBrowser: '_blank'
+            },
+            twitter: {
+                url: utils.composeTwitterLink(shareUrl, item.title),
+                targetBrowser: '_blank'
+            },
+            email: {
+                url: utils.composeEmailLink(shareUrl, item.title),
+                targetBrowser: '_self'
+            }
+        };
+
         vm.copyResult        = null;
+        vm.clickHandler      = clickHandler;
 
         vm.copyUrl = copyUrl;
 
@@ -62,6 +80,11 @@
             $timeout(function () {
                 vm.copyResult = null;
             }, 2000);
+        }
+
+        function clickHandler(provider) {
+            var providerData = providerConfig[provider];
+            window.open(providerData.url, inBrowser ? providerData.browserTarget : '_system');
         }
     }
 
