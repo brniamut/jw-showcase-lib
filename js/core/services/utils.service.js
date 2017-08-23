@@ -37,8 +37,7 @@
      * @name jwShowcase.core.utils
      * @description Collection of utility functions
      */
-    utils.$inject = ['$location'];
-    function utils ($location) {
+    function utils () {
 
         this.flatMap                = flatMap;
         this.ucfirst                = ucfirst;
@@ -405,12 +404,12 @@
          *
          * @returns {string}        Share link
          */
-        function composeFacebookLink () {
+        function composeFacebookLink (url) {
 
             var facebookShareLink = 'https://www.facebook.com/sharer/sharer.php?u={url}';
 
             return facebookShareLink
-                .replace('{url}', encodeURIComponent($location.absUrl()));
+                .replace('{url}', encodeURIComponent(url));
         }
 
         /**
@@ -423,12 +422,12 @@
          *
          * @returns {string}        Share link
          */
-        function composeTwitterLink (title) {
+        function composeTwitterLink (url, title) {
 
             var twitterShareLink = 'http://twitter.com/share?text={text}&amp;url={url}';
 
             return twitterShareLink
-                .replace('{url}', encodeURIComponent($location.absUrl()))
+                .replace('{url}', encodeURIComponent(url))
                 .replace('{text}', encodeURIComponent(title));
         }
 
@@ -442,12 +441,12 @@
          *
          * @returns {string}        Share link
          */
-        function composeEmailLink (title) {
+        function composeEmailLink (url, title) {
 
             var twitterShareLink = 'mailto:?subject={subject}&body={url}';
 
             return twitterShareLink
-                .replace('{url}', encodeURIComponent($location.absUrl()))
+                .replace('{url}', encodeURIComponent(url))
                 .replace('{subject}', encodeURIComponent(title));
         }
     }
